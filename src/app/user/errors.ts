@@ -4,6 +4,9 @@ export const userNotExist = new AppError ('User not Exists.',404)
 export const userAlreadyExist = new AppError ('User Already Exists.',409)
 export const userAlreadyVerified = new AppError ('User Already Verified.',400)
 export const userNotVerified = new AppError ('User Not Verified.',403)
+export const cannotFollowSelf = new AppError ('You cannot follow your own account.',400)
+export const alreadyFollowing = new AppError ('You already follow this user.',409)
+export const followRequestNotFound = new AppError ('Follow request not found.',404)
 
 // class User{
 //     userName;

@@ -24,6 +24,10 @@ export class RedisCacheProvider implements ICacheProvider {
     async set(key:string,value:string,ttl:number){
         return this.client.set(key, value, 'EX', ttl);
     }
+    async setIfNotExists(key:string,value:string,ttl:number){
+        const result = await this.client.set(key,value,'EX',ttl,'NX');
+        return result === 'OK';
+    }
     async get(key:string){
         return this.client.get(key);
     }

@@ -1,4 +1,5 @@
 import { TUserPayload } from './../../lib/interface/userPayload.interface';
+import { randomUUID } from "node:crypto";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import {env} from "../../lib/config/env";
@@ -15,7 +16,7 @@ export async function comparePassword(password:string,hashedPassword:string){
 
 export function generateAccessToken(payload:TUserPayload){
     return jwt.sign(
-        {...payload,tokenType:'access'},
+        {...payload,jti:randomUUID(),tokenType:'access'},
         env.jwt.secret,
         {expiresIn: toSeconds(1,'hours')}
     )
@@ -23,7 +24,7 @@ export function generateAccessToken(payload:TUserPayload){
 
 export function generateFreshToken(payload:TUserPayload){
     return jwt.sign(
-        {...payload,tokenType:'refresh'},
+        {...payload,jti:randomUUID(),tokenType:'refresh'},
         env.jwt.secret,
         {expiresIn:toSeconds(7,'days')}
     )
@@ -37,6 +38,6 @@ export function setCookies(res:Response,accessToken:string,refreshToken:string){
     res.cookie('refresh_token',refreshToken,{
         httpOnly:true,
         maxAge:toMs(7,'days'),
-        path:'/api/auth/refresh-token'
+        path:'/api/auth'
     })
 }

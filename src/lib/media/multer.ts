@@ -1,7 +1,7 @@
-import multer,{diskStorage} from "multer";
+import multer,{memoryStorage} from "multer";
 
 export function multerUpload(){
-    return multer({storage:diskStorage({})})
+    return multer({storage:memoryStorage()})
 }
 
 export function multerUploadSingle(fileName:string){

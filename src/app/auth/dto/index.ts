@@ -23,6 +23,15 @@ export interface verifyAccountDto{
     code:string;
 }
 
+export interface verifyTwoStepLoginDTO{
+    email:string;
+    code:string;
+}
+
+export interface requestPasswordResetDTO{
+    email:string;
+}
+
 export interface forgotPasswordDto{
     email:string;
     code:string;

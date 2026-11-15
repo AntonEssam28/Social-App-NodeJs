@@ -12,5 +12,6 @@ export interface IUser{
     isVerified?:boolean;
     isDeleted?:boolean
     isTwoStepVerificationEnabled?:boolean;
-    profilePicturePath?:string
+    profilePicturePath?:string;
+    isPrivate?:boolean;
 }

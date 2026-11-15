@@ -44,6 +44,10 @@ const schema = new Schema<IUser>({
         trim:true,
     },
     profilePicturePath:String,
+    isPrivate:{
+        type:Boolean,
+        default:false
+    },
     isTwoStepVerificationEnabled:{
         type:Boolean,
         default:false
