@@ -18,4 +18,5 @@ userRouter.post("/follow-requests/:userId/decline",userController.declineFollowR
 userRouter.post("/:userId/follow",userController.followUser);
 userRouter.delete("/:userId/follow",userController.unfollowUser);
 userRouter.post("/upload-profile-pic",multerUploadSingle("pp"),userController.uploadProfilePicture);
+userRouter.delete("/me/profile-picture",userController.deleteProfilePicture);
 userRouter.get("/:userId",userController.getProfile);

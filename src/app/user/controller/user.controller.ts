@@ -152,6 +152,19 @@ class UserController {
             next(error);
         }
     };
+
+    deleteProfilePicture = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const user = await this.userService.deleteProfilePicture(this.getUserId(req));
+            res.json({
+                message: "Profile picture deleted successfully",
+                success: true,
+                data: { profilePicturePath: user.profilePicturePath }
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 export default new UserController();

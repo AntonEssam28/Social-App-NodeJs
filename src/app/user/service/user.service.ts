@@ -179,11 +179,39 @@ class UserService{
         const objectId = this.getObjectId(userId);
         const existingUser = await this.userRepository.getOne({_id:objectId});
         if(!existingUser) throw userNotExist;
-        const key = await this.cloudProvider.uploadFile(file,`users/${userId}`)
-        const user = await this.userRepository.update({_id:objectId},{profilePicturePath:key},{new:true});
+        const oldKey = existingUser.profilePicturePath;
+        const key = await this.cloudProvider.uploadFile(file,`users/${userId}`);
+        let user;
+        try {
+            user = await this.userRepository.update({_id:objectId},{profilePicturePath:key},{new:true});
+        } catch (error) {
+            await this.cloudProvider.deleteFile(key);
+            throw error;
+        }
         if (!user) {
             throw userNotExist;
         }
+        if (oldKey && oldKey !== key) {
+            await this.cloudProvider.deleteFile(oldKey);
+        }
+        return user;
+    }
+
+    deleteProfilePicture = async (userId:string)=>{
+        const objectId = this.getObjectId(userId);
+        const existingUser = await this.userRepository.getOne({_id:objectId});
+        if(!existingUser) throw userNotExist;
+
+        const oldKey = existingUser.profilePicturePath;
+        if(!oldKey) throw new AppError("Profile picture not found",404);
+
+        await this.cloudProvider.deleteFile(oldKey);
+        const user = await this.userRepository.update(
+            {_id:objectId},
+            {profilePicturePath:""},
+            {new:true}
+        );
+        if(!user) throw userNotExist;
         return user;
     }
 }
